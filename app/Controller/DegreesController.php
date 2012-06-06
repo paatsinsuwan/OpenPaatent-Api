@@ -15,6 +15,7 @@ class DegreesController extends AppController {
 			$results[] = $degree['Degree'];
 		}
 		$this->autoRender = false;
+		header('Content-type: application/json');
 		echo json_encode($results);
 	}
 }

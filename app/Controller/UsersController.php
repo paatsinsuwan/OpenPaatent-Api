@@ -15,6 +15,7 @@ class UsersController extends AppController {
 			$results[] = $user['User'];
 		}
 		$this->autoRender = false;
+		header('Content-type: application/json');
 		echo json_encode($results);
 	}
 }

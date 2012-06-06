@@ -15,6 +15,7 @@ class TagSurveysController extends AppController {
 			$results[] = $tagsurvey['TagSurvey'];
 		}
 		$this->autoRender = false;
+		header('Content-type: application/json');
 		echo json_encode($results);
 	}
 }

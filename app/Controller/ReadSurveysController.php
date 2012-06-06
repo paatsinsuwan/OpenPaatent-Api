@@ -15,6 +15,7 @@ class ReadSurveysController extends AppController {
 			$results[] = $readsurvey['ReadSurvey'];
 		}
 		$this->autoRender = false;
+		header('Content-type: application/json');
 		echo json_encode($results);
 	}
 }

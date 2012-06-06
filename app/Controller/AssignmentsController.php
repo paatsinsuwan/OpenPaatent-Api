@@ -15,6 +15,7 @@ class AssignmentsController extends AppController {
 			$results[] = $assignment['Assignment'];
 		}
 		$this->autoRender = false;
+		header('Content-type: application/json');
 		echo json_encode($results);
 	}
 }

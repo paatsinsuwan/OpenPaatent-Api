@@ -15,6 +15,7 @@ class ProfilesController extends AppController {
 			$results[] = $profile['Profile'];
 		}
 		$this->autoRender = false;
+		header('Content-type: application/json');
 		echo json_encode($results);
 	}
 }

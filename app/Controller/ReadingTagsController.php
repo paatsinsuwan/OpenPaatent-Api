@@ -15,6 +15,7 @@ class ReadingTagsController extends AppController {
 			$results[] = $readingTag['ReadingTag'];
 		}
 		$this->autoRender = false;
+		header('Content-type: application/json');
 		echo json_encode($results);
 	}
 }

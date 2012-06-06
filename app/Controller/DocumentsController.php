@@ -16,6 +16,7 @@ class DocumentsController extends AppController {
 			$results[] = $document['Document'];
 		}
 		$this->autoRender = false;
+		header('Content-type: application/json');
 		echo json_encode($results);
 	}
 }
