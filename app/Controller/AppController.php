@@ -32,4 +32,9 @@ App::uses('Controller', 'Controller');
  * @link http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+	var $components = array('DebugKit.Toolbar', 'RequestHandler', 'Session');
+	
+	public function nonApiAccess(){
+		$this->Session->setFlash("Please access this section");
+	}
 }

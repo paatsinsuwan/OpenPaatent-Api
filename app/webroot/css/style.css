@@ -1,0 +1,29 @@
+body{
+	font-family: 'lucida grande',verdana,helvetica,arial,sans-serif;
+}
+#container{
+	width: 940px;
+	margin: 0 auto;
+}
+#header{
+	text-align: center;
+}
+#content .content-page-title{
+	display: block;
+	font-weight: normal;
+	font-size: 120%;
+	margin: 10px 0;
+}
+/*.navbar-inner {
+	background-color: #39599C;
+	background-image: none;
+	color: #ffffff;
+}
+*/
+.navbar .brand, .navbar .nav > li > a {
+	color: #ffffff;
+}
+.hero-unit{
+	background-color: #ffffff;
+	padding: 0 60px;
+}
