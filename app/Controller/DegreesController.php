@@ -7,5 +7,14 @@ App::uses('AppController', 'Controller');
  */
 class DegreesController extends AppController {
 
-
+	public function index(){
+		$this->Degree->recursive = -1;
+		$degrees = $this->Degree->find('all');
+		$results = array();
+		foreach($degrees as $degree){
+			$results[] = $degree['Degree'];
+		}
+		$this->autoRender = false;
+		echo json_encode($results);
+	}
 }

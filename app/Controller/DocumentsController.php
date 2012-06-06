@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+// App::uses('JsonResponse', 'Json.Network');
 /**
  * Documents Controller
  *
@@ -8,16 +9,13 @@ App::uses('AppController', 'Controller');
 class DocumentsController extends AppController {
 	
 	public function index(){
-		if($this->RequestHandler->accepts('json')){
-			$documents = $this->Document->find('all');
-			$results = array();
-			foreach($documents as $document){
-				$results[] = $document['Document'];
-			}
-			$this->set(compact('results'));
+		$this->Document->recursive = -1;
+		$documents = $this->Document->find('all');
+		$results = array();
+		foreach($documents as $document){
+			$results[] = $document['Document'];
 		}
-		else{
-			parent::nonApiAccess();
-		}
+		$this->autoRender = false;
+		echo json_encode($results);
 	}
 }

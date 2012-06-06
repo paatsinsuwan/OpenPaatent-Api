@@ -7,5 +7,14 @@ App::uses('AppController', 'Controller');
  */
 class ReadSurveysController extends AppController {
 
-
+	public function index(){
+		$this->ReadSurvey->recursive = -1;
+		$readsurveys = $this->ReadSurvey->find('all');
+		$results = array();
+		foreach($readsurveys as $readsurvey){
+			$results[] = $readsurvey['ReadSurvey'];
+		}
+		$this->autoRender = false;
+		echo json_encode($results);
+	}
 }
