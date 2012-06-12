@@ -103,15 +103,17 @@ class PagesController extends AppController {
       foreach($assignments as $item){
         $current_item = array(
           "name" => 'assignment '. $item['Assignment']['id'], 
-          'children' => array(
-            'name' => $item['User']['username'],
-            'size' => rand(1000, 9999)
-          )
+          'children' => array()
+           // 'name' => $item['User']['username'],
+          //  'size' => rand(1000, 9999)
+          //)
         );
+        $current_item['children'][] = array("name" => $item['User']['username'], 'size' => rand(1000, 9999));
         $results['children'][] = $current_item;
       }
       if($this->RequestHandler->isAjax()){
-        $this->autoRender = false;
+        //debug("here");die;
+        //$this->autoRender = false;
     		header('Content-type: application/json');
     		$this->set(compact('results'));
       }

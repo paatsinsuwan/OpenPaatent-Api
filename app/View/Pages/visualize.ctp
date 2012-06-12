@@ -3,6 +3,9 @@
 </script> -->
 <div id="chart">
 </div>
+<script type="text/javascript" charset="utf-8">
+  default_url = "<?php echo $this->Html->url(array('controller' => 'pages', 'action' => 'visualize')); ?>";
+</script>
 <?php
   // ready for spine if needed
 	// echo $this->Html->script(array(
