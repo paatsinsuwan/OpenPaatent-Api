@@ -1,4 +1,6 @@
 <?php
+App::import('Model', 'Document');
+App::import('Model', 'Assignment');
 /**
  * Static content controller.
  *
@@ -78,5 +80,44 @@ class PagesController extends AppController {
 		}
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
 		$this->render(implode('/', $path));
+	}
+	public function visualize($query = null)
+	{
+	  $excluding_list = array('cbkm.wong@gmail.com','danieladhunter@gmail.com','pat_nean@hotmail.com', '');
+    if(!empty($query)){
+      
+    }
+    else{
+      $this->Assignment = new Assignment();
+      $assignments = $this->Assignment->find('all', array(
+        'conditions' => array(
+          'Assignment.document_id' => 1, 
+          'NOT' => array(
+            'User.email' => $excluding_list,
+          ),
+          
+        ),
+        'fields' => array('Assignment.*', 'User.username')
+      ));
+      $results = array("name" => "Document 1");
+      foreach($assignments as $item){
+        $current_item = array(
+          "name" => 'assignment '. $item['Assignment']['id'], 
+          'children' => array(
+            'name' => $item['User']['username'],
+            'size' => rand(1000, 9999)
+          )
+        );
+        $results['children'][] = $current_item;
+      }
+      if($this->RequestHandler->isAjax()){
+        $this->autoRender = false;
+    		header('Content-type: application/json');
+    		$this->set(compact('results'));
+      }
+      else{
+        $this->set(compact('results'));
+      }
+    }
 	}
 }

@@ -29,6 +29,7 @@
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
+  Router::connect('/pages/visualize/*', array('controller' => 'pages', 'action' => 'visualize'));
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	
 	Router::parseExtensions('json');

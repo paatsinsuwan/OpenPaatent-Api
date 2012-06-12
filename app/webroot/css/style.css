@@ -27,3 +27,23 @@ body{
 	background-color: #ffffff;
 	padding: 0 60px;
 }
+
+.main-content {
+	padding: 0 60px;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}

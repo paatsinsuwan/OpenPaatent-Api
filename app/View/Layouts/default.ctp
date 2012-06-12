@@ -31,6 +31,8 @@ $cakeDescription = __d('cake_dev', 'OpenPatentProject');
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
+		
+		echo $this->Html->script('jQuery-1.7.2.min');
 	?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -95,7 +97,7 @@ $cakeDescription = __d('cake_dev', 'OpenPatentProject');
 
       <!-- Example row of columns -->
       <div class="row">
-		<div class="span12">
+		<div class="span12 main-content">
 			<?php echo $this->Session->flash(); ?>
 
 			<?php echo $this->fetch('content'); ?>
