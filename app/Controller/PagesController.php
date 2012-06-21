@@ -1,6 +1,14 @@
 <?php
 App::import('Model', 'Document');
 App::import('Model', 'Assignment');
+App::import('Model', 'User');
+App::import('Model', 'ReadingTag');
+App::import('Model', 'TagSurvey');
+App::import('Model', 'Profile');
+
+$sphinxapi = APP."Vendor/sphinxapi.php";
+
+require "$sphinxapi";
 /**
  * Static content controller.
  *
@@ -83,43 +91,182 @@ class PagesController extends AppController {
 	}
 	public function visualize($query = null)
 	{
+	  $document_id = 6;
 	  $excluding_list = array('cbkm.wong@gmail.com','danieladhunter@gmail.com','pat_nean@hotmail.com', '');
+	  $keywords = array("black box");
+	  $search_results = array(
+      "name" => "document$document_id", 
+      "imports" => array(
+        array(
+          array("name" => "document$document_id.Keywords", "field_name" => "all_tags")
+        ),
+        array(
+          array("name" => "document$document_id.PersonalKnowledge", "field_name" => "personal_tags")
+        ), 
+        array(
+          array("name" => "document$document_id.OutsideKnowledge", "field_name" => "outside_tags")
+        ), 
+        array(
+          array("name" => "document$document_id.Metadata", "field_name" => "extra_info_tags")
+        )
+      )
+    );
+    $this->ReadingTag = new ReadingTag();
+    $this->ReadingTag->bindModel(array(
+      'hasAndBelongsToMany' => array(
+        'User'
+      )
+    ));
+    $this->Profile = new Profile();
+    $this->User = new User();
     if(!empty($query)){
       
     }
     else{
-      $this->Assignment = new Assignment();
-      $assignments = $this->Assignment->find('all', array(
-        'conditions' => array(
-          'Assignment.document_id' => 1, 
-          'NOT' => array(
-            'User.email' => $excluding_list,
-          ),
-          
-        ),
-        'fields' => array('Assignment.*', 'User.username')
-      ));
-      $results = array("name" => "Document 1");
-      foreach($assignments as $item){
-        $current_item = array(
-          "name" => 'assignment '. $item['Assignment']['id'], 
-          'children' => array()
-           // 'name' => $item['User']['username'],
-          //  'size' => rand(1000, 9999)
-          //)
-        );
-        $current_item['children'][] = array("name" => $item['User']['username'], 'size' => rand(1000, 9999));
-        $results['children'][] = $current_item;
-      }
       if($this->RequestHandler->isAjax()){
-        //debug("here");die;
-        //$this->autoRender = false;
-    		header('Content-type: application/json');
-    		$this->set(compact('results'));
-      }
-      else{
+        $prof_role_list = array();
+        $reading_tags = $this->ReadingTag->find('all', array('conditions' => array('ReadingTag.document_id' => $document_id)));
+        foreach($reading_tags as $rt){
+          $prof_array = array();
+          foreach($rt['User'] as $user){
+            $user = $this->User->find('all', array(
+              'conditions' => array(
+                'User.id' => $user['id'], 
+                'NOT' => array(
+                  'User.email' => $excluding_list
+                )
+              )
+            ));
+            if(!empty($user[0]['Profile']['professional_role'])){
+              $pr = $user[0]['Profile']['professional_role'];
+              $prof_array[] = $pr;
+              $prof_role_list[] = $pr;
+            }
+          }
+          $results[] = array("name" => $rt['ReadingTag']['title'], "imports" => $prof_array);
+        }
+        foreach($prof_role_list as $pr){
+          $results[] = array("name" => $pr, "imports" => array());
+        }
+        Configure::write("debug", 0);
         $this->set(compact('results'));
       }
+      else{
+        $reading_tags = $this->ReadingTag->find('all', array('conditions' => array('ReadingTag.document_id' => $document_id)));
+        foreach($reading_tags as $rt){
+          $prof_array = array();
+          foreach($rt['User'] as $user){
+            $user = $this->User->find('all', array(
+              'conditions' => array(
+                'User.id' => $user['id'], 
+                'NOT' => array(
+                  'User.email' => $excluding_list
+                )
+              )
+            ));
+            if(!empty($user[0]['Profile']['professional_role'])){
+              $prof_array[] = $user[0]['Profile']['professional_role'];
+            }
+          }
+          $results[] = array("name" => $rt['ReadingTag']['title'], "imports" => $prof_array);
+        }
+        //debug($results);
+        //die;
+        // foreach($reading_tags as $rt){
+        //           $res = $scl->Query("$rt", "all_tags");
+        //           $tmp = array("name" => $rt);
+        //           $matches_array = array();
+        //           if(!empty($res['matches'])){
+        //             foreach($res['matches'] as $a_tag => $val){
+        //               // $a_survey = $this->TagSurvey->findById($a_tag);
+        //               //             $id = $a_survey['Assignment']['user_id'];
+        //               //             $user_ids_list["$id"] = $id;
+        //             }
+        //             // $users = $this->User->find("all", array(
+        //             //               'conditions' => array(
+        //             //                 'User.id' => $user_ids_list,
+        //             //                 'NOT' => array(
+        //             //                   'User.email' => $excluding_list
+        //             //                 )
+        //             //               )
+        //             //             ));
+        //             //             //unset($user_ids_list);
+        //             //             foreach($users as $user){
+        //             //               if(!empty($user['Profile']['professional_role'])){
+        //             //                 $matches_array[] = $user['Profile']['professional_role']. " " .$user['User']['username'];
+        //             //                 $match_list[] = array("name" => $user['Profile']['professional_role']. " " .$user['User']['username']);
+        //             //                 $duration = $user['Profile']['work_duration'];
+        //             //                 $year_of_experiences[$duration] = $duration;
+        //             //               }
+        //             //             }
+        //             //           }
+        //           //$tmp['imports'] = $matches_array;
+        //           //$results[] = $tmp;
+        //         }
+        // foreach($match_list as &$item){
+        //           $current_group = $this->User->find("all", array(
+        //             'conditions' => array(
+        //               'User.id' => $user_ids_list,
+        //               'Profile.professional_role' => $item
+        //             )
+        //           ));
+        //           $profs = array();
+        //           foreach($current_group as $a_member){
+        //             $profs[] = $a_member['Profile']['professional_role']. " " .$a_member  ['User']['username'];
+        //           }
+        //           $item['imports'] = $profs;
+        //           //debug($current_group);die;
+        //           $results[] = $item;
+        //         }
+        
+        // foreach($year_of_experiences as $exp){
+        //           $results[] = array("name" => $exp, "imports" => array());
+        //         }
+        //debug($results); die;
+        $this->set(compact($results));
+      }
+      
+      
+      //debug($results);
+      //die;
     }
+	}
+	
+	private function getUserIdsListByTag($tag = null){
+    $result = array();
+    if(!empty($tag)){
+      $this->ReadingTag->bindModel(
+        array('hasAndBelongsToMany' => array(
+          'User' => array(
+            'classname' => 'User'
+          )
+        ))
+      );
+      $data = $this->ReadingTag->find("first", array("conditions" => array("ReadingTag.title" => $tag)));
+      
+      //debug($tmp); die;
+	    $scl = new SphinxClient();
+	    $query_results = $scl->Query($tag, "all_tags");
+     
+      if(!empty($query_results['matches'])){
+        foreach($query_results['matches'] as $a_tag_id_as_key => $val){
+          $tagsurvey = $this->TagSurvey->findById($a_tag_id_as_key);
+          $data['User']['id'] = $tagsurvey['Assignment']['user_id'];
+          $rt_id = $data['ReadingTag']['id'];
+          $u_id = $data['User']['id'];
+          $this->ReadingTag->query('INSERT INTO `reading_tags_users` SET `reading_tag_id`=' . $rt_id . ', `user_id`=' . $u_id);
+        }
+      }
+      //debug($result);die;
+	  }
+	  //return $result;
+	}
+	
+	private function findMatch($options = null)
+	{
+	  if(!empty($options)){
+	    $results = $options['Model']->find("all", array('conditions' => $options['conditions']));
+	  }
+	  debug($results);
 	}
 }

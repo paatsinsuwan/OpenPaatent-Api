@@ -76,33 +76,33 @@ class Assignment extends AppModel {
  *
  * @var array
  */
-	public $hasMany = array(
-		'ReadSurvey' => array(
-			'className' => 'ReadSurvey',
-			'foreignKey' => 'assignment_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'TagSurvey' => array(
-			'className' => 'TagSurvey',
-			'foreignKey' => 'assignment_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
-	);
+	public $hasOne = array('ReadSurvey', 'TagSurvey');
+		// 'ReadSurvey' => array(
+		//      'className' => 'ReadSurvey',
+		//      'foreignKey' => 'assignment_id',
+		//      'dependent' => false,
+		//      'conditions' => '',
+		//      'fields' => '',
+		//      'order' => '',
+		//      'limit' => '',
+		//      'offset' => '',
+		//      'exclusive' => '',
+		//      'finderQuery' => '',
+		//      'counterQuery' => ''
+		//    ),
+		//    'TagSurvey' => array(
+		//      'className' => 'TagSurvey',
+		//      'foreignKey' => 'assignment_id',
+		//      'dependent' => false,
+		//      'conditions' => '',
+		//      'fields' => '',
+		//      'order' => '',
+		//      'limit' => '',
+		//      'offset' => '',
+		//      'exclusive' => '',
+		//      'finderQuery' => '',
+		//      'counterQuery' => ''
+		//    )
+		//  );
 
 }

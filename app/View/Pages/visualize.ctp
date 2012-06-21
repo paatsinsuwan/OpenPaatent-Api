@@ -2,6 +2,50 @@
 	<p>${title}</p>
 </script> -->
 <div id="chart">
+  <style type="text/css">
+
+  path.arc {
+    cursor: move;
+    fill: #fff;
+  }
+
+  .node {
+    font-size: 70%;
+  }
+
+  .node:hover {
+    fill: #1f77b4;
+  }
+
+  .link {
+    fill: none;
+    stroke: #1f77b4;
+    stroke-opacity: .4;
+    pointer-events: none;
+  }
+
+  .link.source, .link.target {
+    stroke-opacity: 1;
+    stroke-width: 2px;
+  }
+
+  .node.target {
+    fill: #d62728 !important;
+  }
+
+  .link.source {
+    stroke: #d62728;
+  }
+
+  .node.source {
+    fill: #2ca02c;
+  }
+
+  .link.target {
+    stroke: #2ca02c;
+  }
+
+      </style>
 </div>
 <script type="text/javascript" charset="utf-8">
   default_url = "<?php echo $this->Html->url(array('controller' => 'pages', 'action' => 'visualize')); ?>";
@@ -27,7 +71,12 @@
 	//   ));
 	// 3d js script
 	echo $this->Html->script(array(
-	 'd3.v2',
-	 'cluster'
+   //'d3.v2',
+	 //'cluster',
+	 'jquery-1.7.2.min',
+	 'd3',
+	 'd3.layout',
+	 'package',
+	 'viz'
 	));
 ?>
