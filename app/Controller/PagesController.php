@@ -125,6 +125,7 @@ class PagesController extends AppController {
     else{
       if($this->RequestHandler->isAjax()){
         $prof_role_list = array();
+        $duration_list = array();
         $reading_tags = $this->ReadingTag->find('all', array('conditions' => array('ReadingTag.document_id' => $document_id)));
         foreach($reading_tags as $rt){
           $prof_array = array();
@@ -138,97 +139,90 @@ class PagesController extends AppController {
               )
             ));
             if(!empty($user[0]['Profile']['professional_role'])){
-              $pr = $user[0]['Profile']['professional_role'];
+              $pr = "role.".Inflector::camelize(Inflector::slug($user[0]['Profile']['professional_role']." ".$user[0]['User']['username']));
               $prof_array[] = $pr;
               $prof_role_list[] = $pr;
             }
           }
-          $results[] = array("name" => $rt['ReadingTag']['title'], "imports" => $prof_array);
+          $results[] = array("name" => "all_tags.".Inflector::camelize(Inflector::slug($rt['ReadingTag']['title'])), "imports" => $prof_array);
         }
         foreach($prof_role_list as $pr){
-          $results[] = array("name" => $pr, "imports" => array());
+          $current_role_duration = array();
+          $current_role_username = explode(" ", Inflector::humanize(Inflector::underscore($pr)));
+          $current_user = $this->User->findByUsername($current_role_username[count($current_role_username) - 1]);
+          if(preg_match("/\\x{2D}/", $current_user['Profile']['work_duration'])){
+            $duration_string = preg_replace("/\\x{2D}/", "to", $current_user['Profile']['work_duration']);
+          }
+          else{
+            $duration_string = $current_user['Profile']['work_duration'];
+          }
+          if(!empty($duration_string)){
+            $crd = "duration.".Inflector::camelize(Inflector::slug($duration_string));
+          }
+          if(!empty($crd)){
+            $current_role_duration[] = $crd;
+            $duration_list[] = $crd;
+          }
+          $results[] = array("name" => $pr, "imports" => $current_role_duration);
+        }
+        foreach($duration_list as $duration){
+          $results[] = array("name" => $duration, "imports" => array());
         }
         Configure::write("debug", 0);
+        //debug($results);
+        //die;
         $this->set(compact('results'));
       }
       else{
-        $reading_tags = $this->ReadingTag->find('all', array('conditions' => array('ReadingTag.document_id' => $document_id)));
-        foreach($reading_tags as $rt){
-          $prof_array = array();
-          foreach($rt['User'] as $user){
-            $user = $this->User->find('all', array(
-              'conditions' => array(
-                'User.id' => $user['id'], 
-                'NOT' => array(
-                  'User.email' => $excluding_list
-                )
-              )
-            ));
-            if(!empty($user[0]['Profile']['professional_role'])){
-              $prof_array[] = $user[0]['Profile']['professional_role'];
-            }
-          }
-          $results[] = array("name" => $rt['ReadingTag']['title'], "imports" => $prof_array);
-        }
-        //debug($results);
-        //die;
-        // foreach($reading_tags as $rt){
-        //           $res = $scl->Query("$rt", "all_tags");
-        //           $tmp = array("name" => $rt);
-        //           $matches_array = array();
-        //           if(!empty($res['matches'])){
-        //             foreach($res['matches'] as $a_tag => $val){
-        //               // $a_survey = $this->TagSurvey->findById($a_tag);
-        //               //             $id = $a_survey['Assignment']['user_id'];
-        //               //             $user_ids_list["$id"] = $id;
+        // $prof_role_list = array();
+        //         $duration_list = array();
+        //         $reading_tags = $this->ReadingTag->find('all', array('conditions' => array('ReadingTag.document_id' => $document_id)));
+        //         foreach($reading_tags as $rt){
+        //           $prof_array = array();
+        //           foreach($rt['User'] as $user){
+        //             $user = $this->User->find('all', array(
+        //               'conditions' => array(
+        //                 'User.id' => $user['id'], 
+        //                 'NOT' => array(
+        //                   'User.email' => $excluding_list
+        //                 )
+        //               )
+        //             ));
+        //             if(!empty($user[0]['Profile']['professional_role'])){
+        //               $pr = "role.".Inflector::camelize(Inflector::slug($user[0]['Profile']['professional_role']." ".$user[0]['User']['username']));
+        //               $prof_array[] = $pr;
+        //               $prof_role_list[] = $pr;
         //             }
-        //             // $users = $this->User->find("all", array(
-        //             //               'conditions' => array(
-        //             //                 'User.id' => $user_ids_list,
-        //             //                 'NOT' => array(
-        //             //                   'User.email' => $excluding_list
-        //             //                 )
-        //             //               )
-        //             //             ));
-        //             //             //unset($user_ids_list);
-        //             //             foreach($users as $user){
-        //             //               if(!empty($user['Profile']['professional_role'])){
-        //             //                 $matches_array[] = $user['Profile']['professional_role']. " " .$user['User']['username'];
-        //             //                 $match_list[] = array("name" => $user['Profile']['professional_role']. " " .$user['User']['username']);
-        //             //                 $duration = $user['Profile']['work_duration'];
-        //             //                 $year_of_experiences[$duration] = $duration;
-        //             //               }
-        //             //             }
-        //             //           }
-        //           //$tmp['imports'] = $matches_array;
-        //           //$results[] = $tmp;
-        //         }
-        // foreach($match_list as &$item){
-        //           $current_group = $this->User->find("all", array(
-        //             'conditions' => array(
-        //               'User.id' => $user_ids_list,
-        //               'Profile.professional_role' => $item
-        //             )
-        //           ));
-        //           $profs = array();
-        //           foreach($current_group as $a_member){
-        //             $profs[] = $a_member['Profile']['professional_role']. " " .$a_member  ['User']['username'];
         //           }
-        //           $item['imports'] = $profs;
-        //           //debug($current_group);die;
-        //           $results[] = $item;
+        //           $results[] = array("name" => "all_tags.".Inflector::camelize(Inflector::slug($rt['ReadingTag']['title'])), "imports" => $prof_array);
         //         }
-        
-        // foreach($year_of_experiences as $exp){
-        //           $results[] = array("name" => $exp, "imports" => array());
+        //         foreach($prof_role_list as $pr){
+        //           $current_role_duration = array();
+        //           $current_role_username = explode(" ", Inflector::humanize(Inflector::underscore($pr)));
+        //           $current_user = $this->User->findByUsername($current_role_username[count($current_role_username) - 1]);
+        //           if(preg_match("/\\x{2D}/", $current_user['Profile']['work_duration'])){
+        //             $duration_string = preg_replace("/\\x{2D}/", "to", $current_user['Profile']['work_duration']);
+        //           }
+        //           else{
+        //             $duration_string = $current_user['Profile']['work_duration'];
+        //           }
+        //           if(!empty($duration_string)){
+        //             $crd = "duration.".Inflector::camelize(Inflector::slug($duration_string));
+        //           }
+        //           if(!empty($crd)){
+        //             $current_role_duration[] = $crd;
+        //             $duration_list[] = $crd;
+        //           }
+        //           $results[] = array("name" => $pr, "imports" => $current_role_duration);
         //         }
-        //debug($results); die;
-        $this->set(compact($results));
+        //         foreach($duration_list as $duration){
+        //           $results[] = array("name" => $duration, "imports" => array());
+        //         }
+        //         Configure::write("debug", 0);
+        //         debug($results);
+        //         die;
+        //         $this->set(compact('results'));
       }
-      
-      
-      //debug($results);
-      //die;
     }
 	}
 	
