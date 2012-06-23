@@ -213,6 +213,11 @@ class PagesController extends AppController {
         
       }
     }
+    else{
+      $this->Document = new Document();
+      $documents = $this->Document->find("all", array("recursive" => -1));
+      $this->set(compact("documents"));
+    }
     // else{
     //       if($this->RequestHandler->isAjax()){
     //         $prof_role_list = array();

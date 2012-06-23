@@ -1,3 +1,11 @@
+<?php 
+  $keyword_types_mode = array(
+    array("name" => "general keywords", "field_name" => "all_tags"),
+    array("name" => "personal tags", "field_name" => "personal_tags"),
+    array("name" => "outside tags", "field_name" => "outside_tags"),
+    array("name" => "metadata", "field_name" => "extra_info_tags"),
+  ); 
+?>
 <div id="content-title">
   <?php if(!empty($document) && !empty($tag_section_title)): ?>
     <h2>The Correlation Map</h2>
@@ -5,6 +13,25 @@
       <ul>
       <li><?php echo $document['Document']['title']; ?></li>
       <li><?php echo $tag_section_title; ?></li>
+      </ul>
+    </p>
+  <?php else: ?>
+    <h2>please select one of these links below to see visualization</h2>
+    <p>
+      <ul>
+        <?php foreach($documents as $document)://($doc_id = 1; $doc_id < 7; $doc_id++): ?>
+          <?php 
+            $doc_id = $document['Document']['id'];
+            $patent_name = $document['Document']['title'];
+          ?>  
+          <li class="visualize-document-item"><?php echo  "Patent title: ".$patent_name ;?>
+            <ul>
+              <?php foreach($keyword_types_mode as $mode): ?>
+                <li><?php echo $this->Html->link("Users keywords type : $mode[name]", array("controller" => "pages", "action" => "visualize", "layout1", $doc_id, $mode['field_name'])); ?></li>
+              <?php endforeach; ?>
+            </ul>
+          </li>
+        <?php endforeach; ?>
       </ul>
     </p>
   <?php endif; ?>
@@ -59,38 +86,18 @@
 
       </style>
 </div>
-
-<script type="text/javascript" charset="utf-8">
+<?php if(!empty($results)): ?>
+  <script type="text/javascript" charset="utf-8">
   
-  default_url = "<?php echo $this->Html->url($results); ?>";
-</script>
-<?php
-  // ready for spine if needed
-	// echo $this->Html->script(array(
-	//     'jquery-1.7.2.min',
-	//     'jquery.tmpl',
-	//     '/js/spine/lib/spine.js',
-	//     '/js/spine/lib/ajax.js',
-	//     '/js/spine/lib/manager.js',
-	//     '/js/spine/lib/route.js',
-	//     '/js/spine/lib/relation.js',
-	//     '/js/spine/lib/tmpl.js',
-	//     '/js/app/models/user.js',
-	//     '/js/app/models/patent.js',
-	//     '/js/app/models/profile.js',
-	//     '/js/app/models/degree.js',
-	//     '/js/app/controllers/users.js',
-	//     '/js/app/controllers/patents.js',
-	//     '/js/app/application.js',
-	//   ));
-	// 3d js script
-	echo $this->Html->script(array(
-   //'d3.v2',
-	 //'cluster',
-	 'jquery-1.7.2.min',
-	 'd3',
-	 'd3.layout',
-	 'package',
-	 'viz'
-	));
-?>
+    default_url = "<?php echo $this->Html->url($results); ?>";
+  </script>
+  <?php
+  	// 3d js script
+  	echo $this->Html->script(array(
+     'd3',
+  	 'd3.layout',
+  	 'package',
+  	 'viz'
+  	));
+  ?>
+<?php endif; ?>
