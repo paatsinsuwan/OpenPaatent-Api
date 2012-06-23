@@ -56,4 +56,20 @@ class ReadingTag extends AppModel {
 			'order' => ''
 		)
 	);
+	
+	public $hasMany = array(
+		'ReadingTagUser' => array(
+			'className' => 'ReadingTagUser',
+			'foreignKey' => 'reading_tag_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => '' 
+		)
+	);
 }

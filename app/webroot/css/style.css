@@ -165,5 +165,23 @@ body > ul {
   top: -80px;
   left: 35%;
 }
-
+#content-title {
+	position: fixed;
+	top: 75px;
+	left: 50px;
+	background: white;
+	padding: 10px;
+	border: 1px solid #CCC;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: 3px -3px #CCC;
+	
+	-moz-border-radius: 5px;
+	-moz-box-shadow: 3px -3px #CCC;
+	
+	-o-border-radius: 5px;
+	-o-box-shadow: 3px -3px #CCC;
+	
+	-ms-border-radius: 5px;
+	-ms-box-shadow: 3px -3px #CCC;
+}
 

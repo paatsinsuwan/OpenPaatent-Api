@@ -1,6 +1,12 @@
-<!-- <script type="text/x-jQuery-tmpl" id="patents-index-template">
-	<p>${title}</p>
-</script> -->
+<div id="content-title">
+  <h2>The Correlation Map</h2>
+  <p>
+    <ul>
+    <li><?php echo $document['Document']['title']; ?></li>
+    <li><?php echo $tag_section_title; ?></li>
+    </ul>
+  </p>
+</div>
 <div id="chart">
   <style type="text/css">
 
@@ -14,12 +20,14 @@
   }
 
   .node:hover {
-    fill: #1f77b4;
+/*    fill: #1f77b4; blue*/
+    fill: #A3FF75;
   }
 
   .link {
     fill: none;
-    stroke: #1f77b4;
+/*    stroke: #1f77b4; blue*/
+    stroke: #A3FF75;
     stroke-opacity: .4;
     pointer-events: none;
   }
@@ -38,17 +46,21 @@
   }
 
   .node.source {
-    fill: #2ca02c;
+/*    fill: #2ca02c; green*/
+    fill: #1f77b4;
   }
 
   .link.target {
-    stroke: #2ca02c;
+/*    stroke: #2ca02c; green*/
+    stroke: #1f77b4;
   }
 
       </style>
 </div>
+
 <script type="text/javascript" charset="utf-8">
-  default_url = "<?php echo $this->Html->url(array('controller' => 'pages', 'action' => 'visualize')); ?>";
+  
+  default_url = "<?php echo $this->Html->url($results); ?>";
 </script>
 <?php
   // ready for spine if needed
