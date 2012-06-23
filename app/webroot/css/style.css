@@ -161,27 +161,23 @@ body > ul {
 }
 
 #chart div > svg {
-/*  position: absolute;*/
-  top: -80px;
-  left: 35%;
 }
 #content-title {
-	position: fixed;
-	top: 75px;
-	left: 50px;
+	position: relative;
 	background: white;
+	margin-bottom: 30px;
 	padding: 10px;
 	border: 1px solid #CCC;
-	-webkit-border-radius: 5px;
+	-webkit-border-radius: 10px;
 	-webkit-box-shadow: 3px -3px #CCC;
 	
-	-moz-border-radius: 5px;
+	-moz-border-radius: 10px;
 	-moz-box-shadow: 3px -3px #CCC;
 	
-	-o-border-radius: 5px;
+	-o-border-radius: 10px;
 	-o-box-shadow: 3px -3px #CCC;
 	
-	-ms-border-radius: 5px;
+	-ms-border-radius: 10px;
 	-ms-box-shadow: 3px -3px #CCC;
 }
 

@@ -1,11 +1,13 @@
 <div id="content-title">
-  <h2>The Correlation Map</h2>
-  <p>
-    <ul>
-    <li><?php echo $document['Document']['title']; ?></li>
-    <li><?php echo $tag_section_title; ?></li>
-    </ul>
-  </p>
+  <?php if(!empty($document) && !empty($tag_section_title)): ?>
+    <h2>The Correlation Map</h2>
+    <p>
+      <ul>
+      <li><?php echo $document['Document']['title']; ?></li>
+      <li><?php echo $tag_section_title; ?></li>
+      </ul>
+    </p>
+  <?php endif; ?>
 </div>
 <div id="chart">
   <style type="text/css">

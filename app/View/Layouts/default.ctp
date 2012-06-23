@@ -96,13 +96,13 @@ $cakeDescription = __d('cake_dev', 'OpenPatentProject');
       </div>
 
       <!-- Example row of columns -->
-      <div class="row">
-		<div class="span12 main-content">
+      
+		<div class="main-content">
 			<?php echo $this->Session->flash(); ?>
 
 			<?php echo $this->fetch('content'); ?>
 		</div>
-      </div>
+      
 
       <hr>
 

@@ -1,5 +1,5 @@
-var w = 900,
-    h = 900,
+var w = 800,
+    h = 800,
     rx = w / 2,
     ry = h / 2,
     m0,
@@ -20,20 +20,15 @@ var line = d3.svg.line.radial()
     .angle(function(d) { return d.x / 180 * Math.PI; });
 
 // Chrome 15 bug: <http://code.google.com/p/chromium/issues/detail?id=98951>
-// var div = d3.select("#chart").insert("div", "h2")
-//     .style("top", "-80px")
-//     .style("left", "-160px")
-//     .style("width", w + "px")
-//     .style("height", w + "px")
-//     .style("position", "absolute");
 var div = d3.select("#chart").insert("div", "h2")
-		.style("width", "1160px")
+		.style("width", h + "px")
 		.style("height", w + "px")
-		.style("text-align", "center");
+		.style("position", "relative")
+		.style("margin", "0 auto");
 var svg = div.append("svg:svg")
     .attr("width", w)
     .attr("height", w)
-  .append("svg:g")
+  	.append("svg:g")
     .attr("transform", "translate(" + rx + "," + ry + ")");
 
 svg.append("svg:path")
@@ -41,24 +36,24 @@ svg.append("svg:path")
     .attr("d", d3.svg.arc().outerRadius(ry - 120).innerRadius(0).startAngle(0).endAngle(2 * Math.PI))
     .on("mousedown", mousedown);
 
-d3.json(default_url, function(classes){//"flare-imports.json", function(classes) {
+d3.json(default_url, function(classes){
   var nodes = cluster.nodes(packages.root(classes)),
       links = packages.imports(nodes),
       splines = bundle(links);
 
   var path = svg.selectAll("path.link")
       .data(links)
-    .enter().append("svg:path")
+    	.enter().append("svg:path")
       .attr("class", function(d) { return "link source-" + d.source.key + " target-" + d.target.key; })
       .attr("d", function(d, i) { return line(splines[i]); });
 
   svg.selectAll("g.node")
       .data(nodes.filter(function(n) { return !n.children; }))
-    .enter().append("svg:g")
+    	.enter().append("svg:g")
       .attr("class", "node")
       .attr("id", function(d) { return "node-" + d.key; })
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
-    .append("svg:text")
+    	.append("svg:text")
       .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
       .attr("dy", ".31em")
       .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
@@ -108,7 +103,7 @@ function mouseup() {
 
     svg
         .attr("transform", "translate(" + rx + "," + ry + ")rotate(" + rotate + ")")
-      .selectAll("g.node text")
+      	.selectAll("g.node text")
         .attr("dx", function(d) { return (d.x + rotate) % 360 < 180 ? 8 : -8; })
         .attr("text-anchor", function(d) { return (d.x + rotate) % 360 < 180 ? "start" : "end"; })
         .attr("transform", function(d) { return (d.x + rotate) % 360 < 180 ? null : "rotate(180)"; });
