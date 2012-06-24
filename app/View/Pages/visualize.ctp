@@ -18,20 +18,25 @@
   <?php else: ?>
     <h2>please select one of these links below to see visualization</h2>
     <p>
-      <ul>
+      <ul class="visualize-item-container">
+        <div id="mask">
         <?php foreach($documents as $document)://($doc_id = 1; $doc_id < 7; $doc_id++): ?>
           <?php 
             $doc_id = $document['Document']['id'];
             $patent_name = $document['Document']['title'];
           ?>  
-          <li class="visualize-document-item"><?php echo  "Patent title: ".$patent_name ;?>
-            <ul>
-              <?php foreach($keyword_types_mode as $mode): ?>
-                <li><?php echo $this->Html->link("Users keywords type : $mode[name]", array("controller" => "pages", "action" => "visualize", "layout1", $doc_id, $mode['field_name'])); ?></li>
-              <?php endforeach; ?>
-            </ul>
+          <li class="visualize-document-item">
+            <span><?php echo  "Patent title: ".strtolower($patent_name) ;?></span>
+            <div class="document-container-block">
+              <ul>
+                <?php foreach($keyword_types_mode as $mode): ?>
+                  <li><?php echo $this->Html->link("Users keywords type : $mode[name]", array("controller" => "pages", "action" => "visualize", "layout1", $doc_id, $mode['field_name'])); ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
           </li>
         <?php endforeach; ?>
+        </div>
       </ul>
     </p>
   <?php endif; ?>

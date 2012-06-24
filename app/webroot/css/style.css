@@ -180,8 +180,26 @@ body > ul {
 	-ms-border-radius: 10px;
 	-ms-box-shadow: 3px -3px #CCC;
 }
+#content-title h2{
+	text-transform: capitalize;
+}
+.visualize-item-container{
+	/*width: 9999px;
+		height: 120px;*/
+}
+.visualize-item-container #mask{
+	/*width: 400px;
+		height: 120px;
+		overflow: hidden;*/
+}
 .visualize-document-item{
 	margin: 10px 0px;
+	display: inline-block;
+	clear: none;
+	width: 400px;
+}
+.visualize-document-item span{
+	text-transform: capitalize;
 }
 .visualize-document-item ul{
 /*	margin: 10px 0px;*/

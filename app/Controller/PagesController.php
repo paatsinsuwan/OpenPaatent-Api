@@ -134,7 +134,7 @@ class PagesController extends AppController {
           }
         }
       }
-      if($query == "layout1"){
+      else if($query == "layout1"){
         if($this->RequestHandler->isAjax()){
           $prof_role_list = array();
           $duration_list = array();
@@ -174,6 +174,83 @@ class PagesController extends AppController {
             else{
               $duration_string = $current_user['Profile']['work_duration'];
             }
+            if(!empty($duration_string)){
+              $crd = "duration.".Inflector::camelize(Inflector::slug($duration_string));
+            }
+            if(!empty($crd)){
+              $current_role_duration[] = $crd;
+              $duration_list[] = $crd;
+            }
+            $results[] = array("name" => $pr, "imports" => $current_role_duration);
+          }
+          foreach($duration_list as $duration){
+            $results[] = array("name" => $duration, "imports" => array());
+          }
+          Configure::write("debug", 0);
+          $this->set(compact('results'));
+        }
+        else{
+          $array_keyword_type_map = array(
+            "all_tags" => "General Keywords",
+            "personal_tags" => "Personal Keywords",
+            "outside_tags" => "Outside Keywords",
+            "extra_info_tags" => "Metadata"
+          );
+          $tag_section_title = $array_keyword_type_map["$keyword_type"];
+          $this->Document = new Document();
+          $document = $this->Document->findById($doc_id);
+          $results = array(
+              "controller" => "pages", 
+              "action" => "visualize",
+              $query,
+              $doc_id,
+              $keyword_type
+          );
+          $this->set(compact("results", "document", "tag_section_title"));
+        }
+      }
+      else if($query == "layout2"){
+        //debug("here");die;
+        if($this->RequestHandler->isAjax()){
+          $prof_role_list = array();
+          $duration_list = array();
+          $reading_tags = $this->ReadingTag->find('all', array(
+            'conditions' => array(
+              'ReadingTag.document_id' => $document_id,
+             )
+          ));
+          foreach($reading_tags as $rt){
+            $prof_array = array();
+            foreach($rt['ReadingTagUser'] as $item){
+              if($item['tag_section'] == $keyword_type){
+                $user = $this->User->find('all', array(
+                  'conditions' => array(
+                    'User.id' => $item['user_id'], 
+                    'NOT' => array(
+                      'User.email' => $excluding_list
+                    )
+                  )
+                ));
+              }
+              if(!empty($user[0]['Profile']['experience_level'])){
+                $pr = "role.".Inflector::camelize(Inflector::slug($user[0]['Profile']['experience_level']." of  ".$user[0]['User']['username']));
+                $prof_array[] = $pr;
+                $prof_role_list[] = $pr;
+              }
+            }
+            $results[] = array("name" => $keyword_type.".".Inflector::camelize(Inflector::slug($rt['ReadingTag']['title'])), "imports" => $prof_array);
+          }
+          foreach($prof_role_list as $pr){
+            $current_role_duration = array();
+            $current_role_username = explode(" ", Inflector::humanize(Inflector::underscore($pr)));
+            $current_user = $this->User->findByUsername($current_role_username[count($current_role_username) - 1]);
+            // if(preg_match("/\\x{2D}/", $current_user['Profile']['work_duration'])){
+            //               $duration_string = preg_replace("/\\x{2D}/", "to", $current_user['Profile']['work_duration']);
+            //             }
+            //             else{
+            //               $duration_string = $current_user['Profile']['work_duration'];
+            //             }
+            $duration_string = $current_user['Profile']['comfort_level'];
             if(!empty($duration_string)){
               $crd = "duration.".Inflector::camelize(Inflector::slug($duration_string));
             }
