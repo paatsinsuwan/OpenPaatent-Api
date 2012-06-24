@@ -32,7 +32,7 @@ $cakeDescription = __d('cake_dev', 'OpenPatentProject');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 		
-		echo $this->Html->script('jQuery-1.7.2.min');
+		echo $this->Html->script('jquery-1.7.2.min');
 	?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
