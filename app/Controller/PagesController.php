@@ -361,7 +361,7 @@ class PagesController extends AppController {
                   if($user_assignment['type'] == "tag"){
                     $tag_survey = $this->TagSurvey->find('first', array('conditions' => array('TagSurvey.assignment_id' => $user_assignment['id'])));
                     if(!empty($tag_survey['TagSurvey']['expert_on_particular'])){
-                      $pr = "level.".Inflector::camelize(Inflector::slug($user[0]['User']['username'] . " is a ". $tag_survey['TagSurvey']['expert_on_particular']. " on the subject"));
+                      $pr = "level.".Inflector::camelize(Inflector::slug($user[0]['User']['username'] .$tag_survey['TagSurvey']['expert_on_particular']. " on the subject"));
                       $results[] = array("name" => $pr, "imports" => array());
                       $prof_array[] = $pr;
                     }
