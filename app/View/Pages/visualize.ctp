@@ -24,19 +24,20 @@
   <?php else: ?>
     <h2>please select one of these links below to see visualization</h2>
     <p>
-      <ul class="layout-item-container">
-        <?php foreach($layout_array as $layout): ?>
-          <li class="layout-item"><span><?php echo $layout['name']; ?></span>
+      <ul class="document-item-container">
+        <?php foreach($documents as $document): ?>
+          <?php 
+            $doc_id = $document['Document']['id'];
+            $patent_name = $document['Document']['title'];
+          ?>
+          <li class="document-item"><span><?php echo "Patent title: ".strtolower($document['Document']['title']); ?></span>
           <ul class="visualize-item-container">
             <div id="mask">
-            <?php foreach($documents as $document)://($doc_id = 1; $doc_id < 7; $doc_id++): ?>
-              <?php 
-                $doc_id = $document['Document']['id'];
-                $patent_name = $document['Document']['title'];
-              ?>  
-              <li class="visualize-document-item">
-                <span><?php echo  "Patent title: ".strtolower($patent_name) ;?></span>
-                <div class="document-container-block">
+            <?php foreach($layout_array as $layout)://($doc_id = 1; $doc_id < 7; $doc_id++): ?>
+               
+              <li class="visualize-layout-item">
+                <span><?php echo "Layout name: ". strtolower($layout['layout_name']) ;?></span>
+                <div class="layout-container-block">
                   <ul>
                     <?php foreach($keyword_types_mode as $mode): ?>
                       <li><?php echo $this->Html->link("Users keywords type : $mode[name]", array("controller" => "pages", "action" => "visualize", $layout['layout_name'], $doc_id, $mode['field_name'])); ?></li>

@@ -33,7 +33,7 @@ var svg = div.append("svg:svg")
 
 svg.append("svg:path")
     .attr("class", "arc")
-    .attr("d", d3.svg.arc().outerRadius(ry - 120).innerRadius(0).startAngle(0).endAngle(2 * Math.PI))
+    .attr("d", d3.svg.arc().outerRadius(ry - 80).innerRadius(0).startAngle(0).endAngle(2 * Math.PI))
     .on("mousedown", mousedown);
 
 d3.json(default_url, function(classes){

@@ -192,16 +192,16 @@ body > ul {
 		height: 120px;
 		overflow: hidden;*/
 }
-.visualize-document-item{
+.visualize-layout-item{
 	margin: 10px 0px;
 	display: inline-block;
 	clear: none;
 	width: 400px;
 }
-.visualize-document-item span{
+.visualize-layout-item span, .document-item span{
 	text-transform: capitalize;
 }
-.visualize-document-item ul{
+.visualize-layout-item ul{
 /*	margin: 10px 0px;*/
 	padding-top: 10px;
 }
