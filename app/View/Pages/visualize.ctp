@@ -105,6 +105,9 @@
       </style>
 </div>
 <?php if(!empty($results)): ?>
+  <!--[if IE]> 
+    <?php echo $this->Html->script('svg'); ?>
+  <![endif]-->
   <script type="text/javascript" charset="utf-8">
   
     default_url = "<?php echo $this->Html->url($results); ?>";
