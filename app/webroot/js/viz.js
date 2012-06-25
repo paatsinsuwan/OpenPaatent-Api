@@ -66,6 +66,7 @@ d3.json(default_url, function(classes){
     line.tension(this.value / 100);
     path.attr("d", function(d, i) { return line(splines[i]); });
   });
+	$(this).trigger("svg_loaded");
 });
 
 d3.select(window)

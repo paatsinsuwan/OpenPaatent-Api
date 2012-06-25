@@ -106,7 +106,7 @@
 </div>
 <?php if(!empty($results)): ?>
   <!--[if IE]> 
-    <?php echo $this->Html->script('svg'); ?>
+    <?php echo $this->Html->script(array('svg', 'ie-svg')); ?>
   <![endif]-->
   <script type="text/javascript" charset="utf-8">
   
