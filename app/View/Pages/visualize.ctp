@@ -36,7 +36,7 @@
             <?php foreach($layout_array as $layout)://($doc_id = 1; $doc_id < 7; $doc_id++): ?>
                
               <li class="visualize-layout-item">
-                <span><?php echo "Layout name: ". strtolower($layout['layout_name']) ;?></span>
+                <span><?php echo "Correlation map of : ". strtolower($layout['layout_name']) ;?></span>
                 <div class="layout-container-block">
                   <ul>
                     <?php foreach($keyword_types_mode as $mode): ?>
