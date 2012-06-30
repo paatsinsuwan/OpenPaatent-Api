@@ -92,7 +92,7 @@ class PagesController extends AppController {
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
 		$this->render(implode('/', $path));
 	}
-	public function visualize($query = null, $doc_id = null, $keyword_type = null)
+	public function flare_visualize($query = null, $doc_id = null, $keyword_type = null)
 	{
 	  $document_id = $doc_id;
 	  $excluding_list = array('cbkm.wong@gmail.com','danieladhunter@gmail.com','pat_nean@hotmail.com', '');
@@ -426,11 +426,18 @@ class PagesController extends AppController {
 	  }
 	}
 	
-	private function findMatch($options = null)
+	public function co_visualize($query = null, $doc_id = null)
 	{
-	  if(!empty($options)){
-	    $results = $options['Model']->find("all", array('conditions' => $options['conditions']));
+	  if(!empty($query)){
+	    if($this->RequestHandler->isAjax()){
+	      $results = array();
+	      $this->set(compact("results"));
+	    }
 	  }
-	  debug($results);
+	  else{
+	    $this->Document = new Document();
+	    $documents = $this->Document->find("all");
+	    $this->set(compact("documents"));
+	  }
 	}
 }
