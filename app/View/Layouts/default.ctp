@@ -119,6 +119,8 @@ $cakeDescription = __d('cake_dev', 'OpenPatentProject');
 
     </div> <!-- /container -->
 
+    <!-- Google Analytics -->
+    <?php echo $this->Html->script(array('ga')); ?>
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
