@@ -29,7 +29,8 @@
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
-  Router::connect('/pages/visualize/*', array('controller' => 'pages', 'action' => 'visualize'));
+  Router::connect('/pages/flare_visualize/*', array('controller' => 'pages', 'action' => 'flare_visualize'));
+  Router::connect('/pages/co_visualize/*', array('controller' => 'pages', 'action' => 'co_visualize'));
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	
 	Router::parseExtensions('json');
