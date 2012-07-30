@@ -40,7 +40,7 @@
                 <div class="layout-container-block">
                   <ul>
                     <?php foreach($keyword_types_mode as $mode): ?>
-                      <li><?php echo $this->Html->link("Users keywords type : $mode[name]", array("controller" => "pages", "action" => "visualize", $layout['layout_name'], $doc_id, $mode['field_name'])); ?></li>
+                      <li><?php echo $this->Html->link("Users keywords type : $mode[name]", array("controller" => "pages", "action" => "flare_visualize", $layout['layout_name'], $doc_id, $mode['field_name'])); ?></li>
                     <?php endforeach; ?>
                   </ul>
                 </div>
@@ -56,6 +56,137 @@
 </div>
 <div id="chart">
   <style type="text/css">
+  #chart {
+  	position: relative;
+  }
+  .navbar .brand, .navbar .nav > li > a {
+  	color: #ffffff;
+  }
+
+  #chart .invert {
+    background: #1f1f1f;
+    color: #dcdccc;
+  }
+
+  #chart .invert h2, #chart .invert h3 {
+    color: #7f9f7f;
+  }
+
+  #chart .string, #chart .regexp {
+    color: #f39;
+  }
+
+  #chart .keyword {
+    color: #00c;
+  }
+
+  #chart .comment {
+    color: #777;
+    font-style: oblique;
+  }
+
+  #chart .number {
+    color: #369;
+  }
+
+  #chart .class, #chart .special {
+    color: #1181B8;
+  }
+
+  /*body {
+    font: 300 36px "Helvetica Neue";
+    height: 640px;
+    margin: 80px 160px 80px 160px;
+    overflow: hidden;
+    position: relative;
+    width: 960px;
+  }*/
+
+  #chart a:link, a:visited {
+    color: #777;
+    text-decoration: none;
+  }
+
+  #chart a:hover {
+    color: #666;
+  }
+
+  #chart blockquote {
+    margin: 0;
+  }
+
+  #chart blockquote:before {
+    content: "“";
+    position: absolute;
+    left: -.4em;
+  }
+
+  #chart blockquote:after {
+    content: "”";
+    position: absolute;
+  }
+
+  body > ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  #chart h1 {
+    font-size: 64px;
+  }
+
+  #chart h1, h2, h3 {
+    font-weight: inherit;
+    margin: 0;
+  }
+
+  #chart h2, h3 {
+    text-align: right;
+    font-size: inherit;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  #chart h2 {
+    font-size: 24px;
+    position: absolute;
+  }
+
+  #chart h3 {
+    bottom: -20px;
+    font-size: 18px;
+  }
+
+  #chart .invert {
+    background: #1f1f1f;
+    color: #dcdccc;
+  }
+
+  #chart .invert h2, #chart .invert h3 {
+    color: #7f9f7f;
+  }
+
+  #chart .string, #chart .regexp {
+    color: #f39;
+  }
+
+  #chart .keyword {
+    color: #00c;
+  }
+
+  #chart .comment {
+    color: #777;
+    font-style: oblique;
+  }
+
+  #chart .number {
+    color: #369;
+  }
+
+  #chart .class, #chart .special {
+    color: #1181B8;
+  }
 
   path.arc {
     cursor: move;

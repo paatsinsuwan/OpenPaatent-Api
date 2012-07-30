@@ -1,7 +1,9 @@
-var w = 800,
-    h = 800,
-    rx = w / 2,
-    ry = h / 2,
+var w = 900,
+    h = 900,
+    tsrx = w / 2,
+    tsry = h / 2,
+    rx = w / 2.3,
+    ry = h / 2.3,
     m0,
     rotate = 0;
 
@@ -24,13 +26,13 @@ var div = d3.select("#chart").insert("div", "h2")
 		.style("width", h + "px")
 		.style("height", w + "px")
 		.style("position", "relative")
+    .style("text-align", "center")
 		.style("margin", "0 auto");
 var svg = div.append("svg:svg")
     .attr("width", w)
     .attr("height", w)
   	.append("svg:g")
-    .attr("transform", "translate(" + rx + "," + ry + ")");
-
+    .attr("transform", "translate(" + tsrx + "," + tsry + ")");
 svg.append("svg:path")
     .attr("class", "arc")
     .attr("d", d3.svg.arc().outerRadius(ry - 80).innerRadius(0).startAngle(0).endAngle(2 * Math.PI))
@@ -74,7 +76,7 @@ d3.select(window)
     .on("mouseup", mouseup);
 
 function mouse(e) {
-  return [e.pageX - rx, e.pageY - ry];
+  return [e.pageX - tsrx, e.pageY - tsry];
 }
 
 function mousedown() {
@@ -86,7 +88,7 @@ function mousemove() {
   if (m0) {
     var m1 = mouse(d3.event),
         dm = Math.atan2(cross(m0, m1), dot(m0, m1)) * 180 / Math.PI;
-    div.style("-webkit-transform", "translate3d(0," + (ry - rx) + "px,0)rotate3d(0,0,0," + dm + "deg)translate3d(0," + (rx - ry) + "px,0)");
+    div.style("-webkit-transform", "translate3d(0," + (tsry - tsrx) + "px,0)rotate3d(0,0,0," + dm + "deg)translate3d(0," + (tsrx - tsry) + "px,0)");
   }
 }
 
@@ -103,7 +105,7 @@ function mouseup() {
     div.style("-webkit-transform", "rotate3d(0,0,0,0deg)");
 
     svg
-        .attr("transform", "translate(" + rx + "," + ry + ")rotate(" + rotate + ")")
+        .attr("transform", "translate(" + tsrx + "," + tsry + ")rotate(" + rotate + ")")
       	.selectAll("g.node text")
         .attr("dx", function(d) { return (d.x + rotate) % 360 < 180 ? 8 : -8; })
         .attr("text-anchor", function(d) { return (d.x + rotate) % 360 < 180 ? "start" : "end"; })

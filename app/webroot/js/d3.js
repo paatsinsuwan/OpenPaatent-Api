@@ -433,7 +433,6 @@ d3.text = function(url, mime, callback) {
 d3.json = function(url, callback) {
 	// quick fix
 	$.getJSON(url, function(res){
-		console.log(res);
 		callback(res);// ? JSON.parse(res) : null);
 	});
 	// d3.text(url, "application/json", function(text) {

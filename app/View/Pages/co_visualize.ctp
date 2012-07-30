@@ -1,5 +1,5 @@
+<?php if(!empty($documents)): ?>
 <div id="content-title">
-  <?php if(!empty($documents)): ?>
     <h2>Co-occurrence relation graph</h2>
     <p>
       <ul>
@@ -9,7 +9,8 @@
         <?php endforeach; ?>
       </ul>
     </p>
-  <?php else: ?>
+</div>
+<?php else: ?>
     <?php
       echo $this->Html->script(array('d3.v2'));
     ?>
@@ -27,21 +28,6 @@
       margin-left: -20px;
       position: absolute;
       width: 740px;
-    }
-
-    footer {
-      font-size: small;
-      margin-top: 8em;
-    }
-
-    header aside {
-      margin-top: 88px;
-    }
-
-    header aside,
-    footer aside {
-      color: #636363;
-      text-align: right;
     }
 
     aside {
@@ -127,7 +113,7 @@
     }
 
     svg {
-      font: 10px sans-serif;
+      font: 8px sans-serif;
     }
 
     .axis path, .axis line {
@@ -159,13 +145,26 @@
       position: absolute;
     }
     
+    #chart .background {  fill: #eee;}
+    #chart line {  stroke: #fff;}
+    #chart text.active {  fill: red;}
+    
     </style>
+    <div id="chart">
+      <aside>
+        <select id="order">
+          <option value="name">by Name</option>
+          <option value="count">by Frequency</option>
+          <option value="group">by Cluster</option>
+        </select>
+      </aside>
+    </div>
     <script type="text/javascript" charset="utf-8">
       default_url = window.location.pathname;
 
       var margin = {top: 80, right: 0, bottom: 10, left: 80},
-          width = 720,
-          height = 720;
+          width = 1080,
+          height = 1080;
 
       var x = d3.scale.ordinal().rangeBands([0, width]),
           z = d3.scale.linear().domain([0, 4]).clamp(true),
@@ -179,6 +178,7 @@
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       d3.json(default_url, function(miserables) {
+        console.log(miserables);
         var matrix = [],
             nodes = miserables.nodes,
             n = nodes.length;
@@ -300,11 +300,3 @@
       });
     </script>
   <?php endif; ?>
-</div>
-<div id="chart">
-  <select id="order">
-    <option value="name">by Name</option>
-    <option value="count">by Frequency</option>
-    <option value="group">by Cluster</option>
-  </select>
-</div>

@@ -196,7 +196,7 @@ class PagesController extends AppController {
           $document = $this->Document->findById($doc_id);
           $results = array(
               "controller" => "pages", 
-              "action" => "visualize",
+              "action" => "flare_visualize",
               $query,
               $doc_id,
               $keyword_type
@@ -266,7 +266,7 @@ class PagesController extends AppController {
           $document = $this->Document->findById($doc_id);
           $results = array(
               "controller" => "pages", 
-              "action" => "visualize",
+              "action" => "flare_visualize",
               $query,
               $doc_id,
               $keyword_type
@@ -326,7 +326,7 @@ class PagesController extends AppController {
           $document = $this->Document->findById($doc_id);
           $results = array(
               "controller" => "pages", 
-              "action" => "visualize",
+              "action" => "flare_visualize",
               $query,
               $doc_id,
               $keyword_type
@@ -386,7 +386,7 @@ class PagesController extends AppController {
           $document = $this->Document->findById($doc_id);
           $results = array(
               "controller" => "pages", 
-              "action" => "visualize",
+              "action" => "flare_visualize",
               $query,
               $doc_id,
               $keyword_type
@@ -430,8 +430,77 @@ class PagesController extends AppController {
 	{
 	  if(!empty($query)){
 	    if($this->RequestHandler->isAjax()){
-	      $results = array();
+	      $this->ReadingTagUser = new ReadingTagUser();
+        $string = "SELECT user_id, users.username, GROUP_CONCAT( DISTINCT (reading_tag_id)
+        ORDER BY reading_tag_id ) AS tag_list
+        FROM reading_tag_users
+        LEFT JOIN reading_tags ON reading_tags.id = reading_tag_users.reading_tag_id
+        LEFT JOIN users ON users.id = user_id
+        WHERE reading_tags.document_id =1
+        AND users.email NOT 
+        IN ('cbkm.wong@gmail.com',  'danieladhunter@gmail.com',  'pat_nean@hotmail.com',  '')
+        GROUP BY user_id";
+        $user_id_to_tag_id = $this->ReadingTagUser->query($string);
+        $i = 0;
+	      foreach($user_id_to_tag_id as $item){
+	        //debug($item);
+	        $nodes[$item['reading_tag_users']['user_id']] = array("name" => Inflector::camelize(Inflector::slug($item['users']['username'])), "group" => 1);
+	        
+	        //$nodes[] = array("name" => Inflector::camelize(Inflector::slug($item['users']['username'])), "group" => 1);
+	        //$links[] = array("source" => $i, "target" => 0, "value" => 1);//count(explode(",", $item[0]['user_list'])));
+	        //$links[] = array("source" => $i, "target" => $i-1, "value" => 1);
+	        $links[] = array("source" => $i, "target" => 0, "value" => 1);
+	        $i++;
+	      }
+	      $array_keys = array_keys($nodes);
+        foreach($array_keys as $key){
+          $tmp_node_list[] = $nodes[$key];
+        }
+	      $results = array("nodes" => $tmp_node_list, "links" => $links);
+	      Configure::write("debug", 0);
 	      $this->set(compact("results"));
+	    }
+	    else{
+	      // test
+	              // 
+	             // $this->ReadingTag = new ReadingTag();
+	             //         $tags = $this->ReadingTag->find("all", array(
+	             //           'conditions' => array(
+	             //             'ReadingTag.document_id' => $doc_id
+	             //           )
+	             //         ));
+	             //         $i = 1;
+        $this->ReadingTagUser = new ReadingTagUser();
+        $string = "SELECT user_id, GROUP_CONCAT( DISTINCT (reading_tag_id)
+        ORDER BY reading_tag_id ) AS tag_list
+        FROM reading_tag_users
+        LEFT JOIN reading_tags ON reading_tags.id = reading_tag_users.reading_tag_id
+        LEFT JOIN users ON users.id = user_id
+        WHERE reading_tags.document_id =1
+        AND users.email NOT 
+        IN ('cbkm.wong@gmail.com',  'danieladhunter@gmail.com',  'pat_nean@hotmail.com',  '')
+        GROUP BY user_id";
+        $user_id_to_tag_id = $this->ReadingTagUser->query($string);
+        foreach($user_id_to_tag_id as $item){
+          //debug($item);
+          $user_list[] = trim($item['reading_tag_users']['user_id']);
+        }
+        //debug($user_list);
+        $this->User = new User();
+        $this->User->unbindModel(array('hasMany' => array('ReadingTagUser', 'Assignment')));
+        $users = $this->User->find("all", array('conditions' => array('User.id' => $user_list)));
+        debug($users);
+        //debug($user_id_to_tag_id);
+        // foreach($tags as $tag){
+        //           
+        //           //$current = $this->ReadingTagUser->find("all", array("conditions" => array("ReadingTagUser.reading_tag_id" => $tag['ReadingTag']['id'])));
+        //           
+        //           $current = $this->ReadingTagUser->query();
+        //           debug($current);
+        //           $nodes[] = array("name" => Inflector::camelize(Inflector::slug($tag['ReadingTag']['title'])), "group" => 1);
+        //           $links[] = array("source" => $i, "target" => $i-1, "value" => 1);
+        //         }
+  	    // test
 	    }
 	  }
 	  else{

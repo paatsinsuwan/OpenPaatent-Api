@@ -83,7 +83,7 @@ $cakeDescription = __d('cake_dev', 'OpenPatentProject');
 				<li><a href="/pages/about">About</a></li>
 				<li><a href="/pages/contact">Contact</a></li>
 				<li><a href="/pages/flare_visualize">Flare Data Visualization</a></li>
-				<li><a href="/pages/co_visualize">Co-occurrence Data Visualization</a></li>
+				<!-- <li><a href="/pages/co_visualize">Co-occurrence Data Visualization</a></li> -->
             </ul>
           </div><!--/.nav-collapse -->
         </div>
